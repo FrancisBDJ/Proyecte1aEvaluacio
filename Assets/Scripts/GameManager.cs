@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
         _level++;
         _txtWinMasage.gameObject.SetActive(true);
         Time.timeScale = 0f;
+        
     }
 
 
