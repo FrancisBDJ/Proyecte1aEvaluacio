@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     
     [SerializeField]
-    private int _playerLives = 3;
+    private int _playerLives;
     
     [SerializeField]
     private int _score = 0;
@@ -37,16 +38,29 @@ public class GameManager : MonoBehaviour
 
     private void InitLevel1()
     {
-        
 
+        _playerLives = 3;
         plane.transform.position = start.transform.position;
+        
+        
 
     }
     
     private void InitLevel2()
     {
-        
 
+        if (_playerLives == null)
+        {
+            _playerLives = 3;
+            
+        }
+
+        else
+        {
+            _playerLives = _playerLives;
+        }
+        
+        
         plane.transform.position = start.transform.position;
 
     }
@@ -73,27 +87,65 @@ public class GameManager : MonoBehaviour
 
     public void WinLevel()
     {
-        
-        
-        _txtWinMasage.gameObject.SetActive(true);
-        _nextLevelButton.gameObject.SetActive(true);
-        _playAgainButton.gameObject.SetActive(true);
-        _quitGameButton.gameObject.SetActive(true);
         Time.timeScale = 0f;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        level++;
+        
+        _txtWinMasage.gameObject.SetActive(true);
+        if (level == 1)
+        {
+            _nextLevelButton.gameObject.SetActive(true);
+            _playAgainButton.gameObject.SetActive(true);
+            _quitGameButton.gameObject.SetActive(true);
+            
+            level++; 
+        }
+
+        else
+        {
+            _playAgainButton.gameObject.SetActive(true);
+            _quitGameButton.gameObject.SetActive(true);
+        }
+        
 
     }
 
 
     public void GameOver()
     {
+        _txtGameOver.gameObject.SetActive(true);
+        _playAgainButton.gameObject.SetActive(true);
+            
+        _quitGameButton.gameObject.SetActive(true);
+            
+        Time.timeScale = 0f;
+    }
+    
+    private void ReplayLevel()
+    {
         if (level == 1)
         {
-            _txtGameOver.gameObject.SetActive(true);
-            Time.timeScale = 0f;
+            SceneManager.LoadScene("Level1");
         }
+        else
+        {
+            SceneManager.LoadScene("Level2");
+        }
+        
+    }
+
+    private void PlayNextLevel()
+    {
+        SceneManager.LoadScene("Level2");
+    }
+    
+    private void QuitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
     
     
@@ -117,8 +169,12 @@ public class GameManager : MonoBehaviour
         _txtGameOver.gameObject.SetActive(false);
         _txtWinMasage.gameObject.SetActive(false);
         _playAgainButton.gameObject.SetActive(false);
+        _playAgainButton.onClick.AddListener(ReplayLevel);
         _quitGameButton.gameObject.SetActive(false);
+        _quitGameButton.onClick.AddListener(QuitGame);
         _nextLevelButton.gameObject.SetActive(false);
+        _nextLevelButton.onClick.AddListener(PlayNextLevel);
+        
         
         
         if (level == 1)
