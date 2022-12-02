@@ -13,9 +13,10 @@ public class GameManager : MonoBehaviour
     
     [SerializeField]
     private int _playerLives;
-    
     [SerializeField]
-    private int _score = 0;
+    private int _score;
+
+    public bool _paused;
     public int level; 
     
     //Cached References
@@ -26,6 +27,9 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI _txtGameOver;
     [SerializeField]
     private TextMeshProUGUI _txtWinMasage;
+
+    [SerializeField]
+    private TextMeshProUGUI _txtPause;
 
     [SerializeField] 
     private Button _nextLevelButton;
@@ -49,6 +53,7 @@ public class GameManager : MonoBehaviour
         plane.transform.position = start.transform.position;
         _txtGameOver.gameObject.SetActive(false);
         _txtWinMasage.gameObject.SetActive(false);
+        _txtPause.gameObject.SetActive(false);
         _playAgainButton.gameObject.SetActive(false);
         _playAgainButton.onClick.AddListener(ReplayLevel);
         _quitGameButton.gameObject.SetActive(false);
@@ -59,12 +64,30 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
-    
+
+    private void Pause()
+    {
+        if (_paused == true)
+        {
+            _txtPause.gameObject.SetActive(false);
+            Time.timeScale = 1.0f;
+            _paused = false;
+        }
+
+        else
+        {
+            _txtPause.gameObject.SetActive(true);
+            Time.timeScale = 0.0f;
+            _paused = true;
+        }
+    }
+
     private void InitLevel2()
     {
         plane.transform.position = start.transform.position;
         _txtGameOver.gameObject.SetActive(false);
         _txtWinMasage.gameObject.SetActive(false);
+        _txtPause.gameObject.SetActive(false);
         _playAgainButton.gameObject.SetActive(false);
         _playAgainButton.onClick.AddListener(ReplayLevel);
         _quitGameButton.gameObject.SetActive(false);
@@ -116,8 +139,11 @@ public class GameManager : MonoBehaviour
         if (level == 1)
         {
             _nextLevelButton.gameObject.SetActive(true);
+            _nextLevelButton.onClick.AddListener(PlayNextLevel);
             _playAgainButton.gameObject.SetActive(true);
+            _playAgainButton.onClick.AddListener(ReplayLevel);
             _quitGameButton.gameObject.SetActive(true);
+            _quitGameButton.onClick.AddListener(QuitGame);
             
         }
 
@@ -125,7 +151,9 @@ public class GameManager : MonoBehaviour
         {
             
             _playAgainButton.gameObject.SetActive(true);
+            _playAgainButton.onClick.AddListener(ReplayLevel);
             _quitGameButton.gameObject.SetActive(true);
+            _quitGameButton.onClick.AddListener(QuitGame);
         }
         
 
@@ -136,8 +164,10 @@ public class GameManager : MonoBehaviour
     {
         _txtGameOver.gameObject.SetActive(true);
         _playAgainButton.gameObject.SetActive(true);
+        _playAgainButton.onClick.AddListener(ReplayLevel);
         _quitGameButton.gameObject.SetActive(true);
-        Time.timeScale = 0f;
+        _quitGameButton.onClick.AddListener(QuitGame);
+        Time.timeScale = 0.0f;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         
@@ -147,20 +177,20 @@ public class GameManager : MonoBehaviour
     {
         if (level == 1)
         {
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene("Scenes/Level1");
         }
         if (level == 2)
         {
-            SceneManager.LoadScene("Level2");
+            SceneManager.LoadScene("Scenes/Level2");
         }
         
     }
 
     private void PlayNextLevel()
     {
-        _score = _score + 100;
-        level++; 
-        SceneManager.LoadScene("Level2");
+        _score = 100;
+        level = 2; 
+        SceneManager.LoadScene("Scenes/Level2");
     }
     
     private void QuitGame()
@@ -191,6 +221,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         plane = GameObject.FindGameObjectWithTag("Player");
+        _txtPause.gameObject.SetActive(false);
         _txtGameOver.gameObject.SetActive(false);
         _txtWinMasage.gameObject.SetActive(false);
         _playAgainButton.gameObject.SetActive(false);
@@ -199,6 +230,10 @@ public class GameManager : MonoBehaviour
         _quitGameButton.onClick.AddListener(QuitGame);
         _nextLevelButton.gameObject.SetActive(false);
         _nextLevelButton.onClick.AddListener(PlayNextLevel);
+        Time.timeScale = 1.0f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        
         if (level == 1)
         {
             InitLevel1();
@@ -208,11 +243,15 @@ public class GameManager : MonoBehaviour
         {
             InitLevel2();
         }
-        }
+    }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Pause();
+        }
         if (plane.transform.position.z >= goal.transform.position.z)
         {
             WinLevel();
