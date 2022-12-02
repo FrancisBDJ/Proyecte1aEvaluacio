@@ -26,6 +26,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _txtWinMasage;
 
+    [SerializeField] 
+    private Button _nextLevelButton;
+    [SerializeField] 
+    private Button _playAgainButton;
+    [SerializeField] 
+    private Button _quitGameButton;
     
 
 
@@ -70,8 +76,14 @@ public class GameManager : MonoBehaviour
         
         
         _txtWinMasage.gameObject.SetActive(true);
+        _nextLevelButton.gameObject.SetActive(true);
+        _playAgainButton.gameObject.SetActive(true);
+        _quitGameButton.gameObject.SetActive(true);
         Time.timeScale = 0f;
-        
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        level++;
+
     }
 
 
@@ -104,7 +116,9 @@ public class GameManager : MonoBehaviour
     {
         _txtGameOver.gameObject.SetActive(false);
         _txtWinMasage.gameObject.SetActive(false);
-        level = this.level;
+        _playAgainButton.gameObject.SetActive(false);
+        _quitGameButton.gameObject.SetActive(false);
+        _nextLevelButton.gameObject.SetActive(false);
         
         
         if (level == 1)
