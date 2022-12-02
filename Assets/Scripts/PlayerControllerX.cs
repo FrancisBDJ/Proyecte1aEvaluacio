@@ -20,7 +20,14 @@ public class PlayerControllerX : MonoBehaviour
     {
         // get the user's vertical input
         verticalInput = Input.GetAxis("Vertical");
-        horizontalInput = Input.GetAxis("Horizontal");
+        
+        // get the user's horizontal input
+        if (_gameManager.level == 2)
+        {
+            horizontalInput = Input.GetAxis("Horizontal");
+            transform.Rotate( 0,0, -horizontalInput * rotationSpeed * Time.deltaTime);
+        }
+        
         if (Input.GetKey(KeyCode.W) == true)
         {
             // Move up
@@ -37,7 +44,7 @@ public class PlayerControllerX : MonoBehaviour
 
         // Rotation 
         transform.Rotate( -verticalInput * rotationSpeed * Time.deltaTime,0, 0);
-        transform.Rotate( 0,0, -horizontalInput * rotationSpeed * Time.deltaTime);
+        
         // tilt the plane up/down based on up/down arrow keys
     }
 }

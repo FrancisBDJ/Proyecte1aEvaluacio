@@ -38,51 +38,72 @@ public class GameManager : MonoBehaviour
 
     private void InitLevel1()
     {
+        
+        
+        if (_playerLives == 0)
+        {
+            _playerLives =  3;
+            
+        }
 
-        _playerLives = 3;
         plane.transform.position = start.transform.position;
-        
-        
-
+        _txtGameOver.gameObject.SetActive(false);
+        _txtWinMasage.gameObject.SetActive(false);
+        _playAgainButton.gameObject.SetActive(false);
+        _playAgainButton.onClick.AddListener(ReplayLevel);
+        _quitGameButton.gameObject.SetActive(false);
+        _quitGameButton.onClick.AddListener(QuitGame);
+        _nextLevelButton.gameObject.SetActive(false);
+        _nextLevelButton.onClick.AddListener(PlayNextLevel);
+        Time.timeScale = 1.0f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
     
     private void InitLevel2()
     {
-
-        if (_playerLives == null)
+        plane.transform.position = start.transform.position;
+        _txtGameOver.gameObject.SetActive(false);
+        _txtWinMasage.gameObject.SetActive(false);
+        _playAgainButton.gameObject.SetActive(false);
+        _playAgainButton.onClick.AddListener(ReplayLevel);
+        _quitGameButton.gameObject.SetActive(false);
+        _quitGameButton.onClick.AddListener(QuitGame);
+        _nextLevelButton.gameObject.SetActive(false);
+        _nextLevelButton.onClick.AddListener(PlayNextLevel);
+        Time.timeScale = 1.0f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        
+        if (_playerLives == 0)
         {
             _playerLives = 3;
             
         }
-
-        else
-        {
-            _playerLives = _playerLives;
-        }
         
-        
-        plane.transform.position = start.transform.position;
-
     }
 
     public void LoseLife()
     {
         
         _playerLives = _playerLives - 1;
-        if (level == 1)
-        {
-            InitLevel1();
-        }
-        
-        if (level == 2)
-        {
-            InitLevel2();
-        }
-
-        if (_playerLives < 1)
+        if (_playerLives == 0)
         {
             GameOver();
         }
+        else
+        {
+            if (level == 1)
+            {
+                InitLevel1();
+            }
+        
+            if (level == 2)
+            {
+                InitLevel2();
+            }
+        }
+       
     }
 
     public void WinLevel()
@@ -98,11 +119,11 @@ public class GameManager : MonoBehaviour
             _playAgainButton.gameObject.SetActive(true);
             _quitGameButton.gameObject.SetActive(true);
             
-            level++; 
         }
 
-        else
+        if (level == 2)
         {
+            
             _playAgainButton.gameObject.SetActive(true);
             _quitGameButton.gameObject.SetActive(true);
         }
@@ -115,10 +136,11 @@ public class GameManager : MonoBehaviour
     {
         _txtGameOver.gameObject.SetActive(true);
         _playAgainButton.gameObject.SetActive(true);
-            
         _quitGameButton.gameObject.SetActive(true);
-            
         Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        
     }
     
     private void ReplayLevel()
@@ -127,7 +149,7 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("Level1");
         }
-        else
+        if (level == 2)
         {
             SceneManager.LoadScene("Level2");
         }
@@ -136,6 +158,8 @@ public class GameManager : MonoBehaviour
 
     private void PlayNextLevel()
     {
+        _score = _score + 100;
+        level++; 
         SceneManager.LoadScene("Level2");
     }
     
@@ -166,6 +190,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        plane = GameObject.FindGameObjectWithTag("Player");
         _txtGameOver.gameObject.SetActive(false);
         _txtWinMasage.gameObject.SetActive(false);
         _playAgainButton.gameObject.SetActive(false);
@@ -174,9 +199,6 @@ public class GameManager : MonoBehaviour
         _quitGameButton.onClick.AddListener(QuitGame);
         _nextLevelButton.gameObject.SetActive(false);
         _nextLevelButton.onClick.AddListener(PlayNextLevel);
-        
-        
-        
         if (level == 1)
         {
             InitLevel1();
@@ -186,10 +208,7 @@ public class GameManager : MonoBehaviour
         {
             InitLevel2();
         }
-
-       
-        
-    }
+        }
 
     // Update is called once per frame
     void Update()
