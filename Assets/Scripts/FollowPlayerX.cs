@@ -20,7 +20,7 @@ public class FollowPlayerX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_gameManager._level == 1)
+        if (_gameManager.level == 1)
         {
             if (plane != null)
             {
@@ -29,7 +29,7 @@ public class FollowPlayerX : MonoBehaviour
                 transform.position = plane.transform.position + offsetLevel1;
             }
         }
-        if (_gameManager._level == 2)
+        if (_gameManager.level == 2)
         {
             if (plane != null)
             {

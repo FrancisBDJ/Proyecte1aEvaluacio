@@ -644,9 +644,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerLives: 3
-  _level: 1
-  _win: 0
   _score: 0
+  level: 1
   plane: {fileID: 825415029}
   start: {fileID: 2066412384}
   goal: {fileID: 304570368}
@@ -1039,6 +1038,7 @@ MonoBehaviour:
   speed: 15
   rotationSpeed: 100
   verticalInput: 0
+  horizontalInput: 0
 --- !u!1 &899755176
 GameObject:
   m_ObjectHideFlags: 0

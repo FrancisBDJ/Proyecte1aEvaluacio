@@ -12,32 +12,26 @@ public class GameManager : MonoBehaviour
     
     [SerializeField]
     private int _playerLives = 3;
-    public int _level = 1;
-    [SerializeField]
-    private bool _win = false;
-    [SerializeField]
-    private int _score;
     
+    [SerializeField]
+    private int _score = 0;
+    public int level; 
     
     //Cached References
     public GameObject plane;
     public GameObject start;
     public GameObject goal;
-
     [SerializeField] 
     private TextMeshProUGUI _txtGameOver;
     [SerializeField]
     private TextMeshProUGUI _txtWinMasage;
-    
-    
 
+    
 
 
     private void InitLevel1()
     {
-        _txtGameOver.gameObject.SetActive(false);
-        _win = false;
-        _txtWinMasage.gameObject.SetActive(false);
+        
 
         plane.transform.position = start.transform.position;
 
@@ -45,9 +39,7 @@ public class GameManager : MonoBehaviour
     
     private void InitLevel2()
     {
-        _txtGameOver.gameObject.SetActive(false);
-        _win = false;
-        _txtWinMasage.gameObject.SetActive(false);
+        
 
         plane.transform.position = start.transform.position;
 
@@ -57,12 +49,12 @@ public class GameManager : MonoBehaviour
     {
         
         _playerLives = _playerLives - 1;
-        if (_level == 1)
+        if (level == 1)
         {
             InitLevel1();
         }
         
-        if (_level == 2)
+        if (level == 2)
         {
             InitLevel2();
         }
@@ -75,8 +67,8 @@ public class GameManager : MonoBehaviour
 
     public void WinLevel()
     {
-        _win = true;
-        _level++;
+        
+        
         _txtWinMasage.gameObject.SetActive(true);
         Time.timeScale = 0f;
         
@@ -85,7 +77,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        if (_level == 1)
+        if (level == 1)
         {
             _txtGameOver.gameObject.SetActive(true);
             Time.timeScale = 0f;
@@ -110,13 +102,17 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _txtGameOver.gameObject.SetActive(false);
+        _txtWinMasage.gameObject.SetActive(false);
+        level = this.level;
         
-        if (_level == 1)
+        
+        if (level == 1)
         {
             InitLevel1();
         }
         
-        if (_level == 2)
+        if (level == 2)
         {
             InitLevel2();
         }

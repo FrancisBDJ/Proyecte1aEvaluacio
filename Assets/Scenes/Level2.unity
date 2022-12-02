@@ -644,8 +644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerLives: 3
-  _level: 0
-  _win: 0
+  _level: 2
   _score: 0
   plane: {fileID: 825415029}
   start: {fileID: 2066412384}
